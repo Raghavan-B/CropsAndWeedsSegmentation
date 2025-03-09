@@ -1,0 +1,4 @@
+InputImg:
+  type: JpegImageFile
+  height: 224
+  width: 224
