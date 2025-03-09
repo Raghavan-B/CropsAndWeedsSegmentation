@@ -1,0 +1,24 @@
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch 
+torchvision
+albumentations
+segmentation-models-pytorch
+python-dotenv
+mlflow
+numpy
+Flask
+flask-cors
+types-PyYAML
+ensure
+tqdm
+PyYAML
+python-box
+matplotlib
+notebook
+pandas
+pillow
+pymongo[srv]==3.12
+certifi
+hyperopt
+
+-e .

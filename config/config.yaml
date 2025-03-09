@@ -1,0 +1,15 @@
+artifacts_root: artifacts
+
+data_ingestion:
+  root_dir: artifacts/data_ingestion
+  train_img_dir: artifacts/data_ingestion/train/img
+  train_mask_dir: artifacts/data_ingestion/train/mask
+  test_img_dir: artifacts/data_ingestion/test/img
+  test_mask_dir: artifacts/data_ingestion/test/mask
+  val_img_dir: artifacts/data_ingestion/val/img
+  val_mask_dir: artifacts/data_ingestion/val/mask
+
+  others_img_dir: artifacts/data_ingestion/others/img
+  database_name: 'images_db'
+  collection_name: 'images_dataset_collection'
+  
