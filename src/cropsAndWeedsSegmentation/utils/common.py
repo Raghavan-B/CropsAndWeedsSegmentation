@@ -4,7 +4,7 @@ from src.cropsAndWeedsSegmentation.logging.logger import logger
 from src.cropsAndWeedsSegmentation.exception.exception import SegmentationException
 from ensure import ensure_annotations
 from pathlib import Path
-from typing import Any
+from typing import Any,Union,Type
 from box.exceptions import BoxValueError
 from box import ConfigBox
 import sys
@@ -47,7 +47,7 @@ def create_directories(path_to_directories:list,verbose=True):
         if verbose:
             logger.info(f'Created directory at: {path}')
 
-@ensure_annotations
+
 def save_json(path:Path, data:dict) -> None:
     '''
     Description:
@@ -63,7 +63,7 @@ def save_json(path:Path, data:dict) -> None:
 
 
 @ensure_annotations
-def save_json(path:Path) -> ConfigBox:
+def load_json(path:Path) -> ConfigBox:
     '''
     Description:
 
@@ -77,8 +77,8 @@ def save_json(path:Path) -> ConfigBox:
     logger.info(f'Json file loaded from  {path}')
     return ConfigBox(content)
 
-@ensure_annotations
-def save_model(path:Path,model:torch.nn.Module) -> None:
+
+def save_model(path:Union[str, Path],model) -> None:
     '''
     Description:
 

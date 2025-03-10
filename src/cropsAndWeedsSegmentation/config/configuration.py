@@ -1,6 +1,6 @@
 from src.cropsAndWeedsSegmentation.constants import CONFIG_FILE_PATH,PARAMS_FILE_PATH,SCHEMA_FILE_PATH
 from src.cropsAndWeedsSegmentation.utils.common import read_yaml,create_directories
-from src.cropsAndWeedsSegmentation.entity.config_entity import (DataIngestionConfig,DataValidationConfig,DataTransformationConfig)
+from src.cropsAndWeedsSegmentation.entity.config_entity import (DataIngestionConfig,DataValidationConfig,DataTransformationConfig,ModelTrainerConfig,ModelEvaluationConfig)
 
 class ConfigurationManager:
     def __init__(self,config_filepath=CONFIG_FILE_PATH,params_filepath = PARAMS_FILE_PATH,schema_file_path = SCHEMA_FILE_PATH):
@@ -60,6 +60,46 @@ class ConfigurationManager:
 
         return data_transformation_config
     
+    def get_model_training_config(self)->ModelTrainerConfig:
+        config = self.config.model_trainer
+        params = self.params.Segformer
+
+        create_directories([config.root_dir])
+
+        model_trainer_config = ModelTrainerConfig(
+            root_dir=config.root_dir,
+            data_dir=config.data_dir,
+            model_name=config.model_name,
+            epochs=params.epochs,
+            lr = params.lr,
+            weight_decay=params.weight_decay,
+            enoder= params.encoder,
+            weights=params.weights,
+            architecture=params.architecture,
+            in_channels=params.in_channels,
+            classes=params.classes,
+            batch_size=16
+        )
+
+        return model_trainer_config
+    
+    def get_model_eval_config(self)->ModelEvaluationConfig:
+        config = self.config.model_evaluation
+        params = self.params.Segformer
+
+        create_directories([config.root_dir])
+
+        return ModelEvaluationConfig(
+            root_dir=config.root_dir,
+            model_path= config.model_path,
+            enoder = params.encoder,
+            weights = params.weights,
+            in_channels = params.in_channels,
+            classes = params.classes
+        )
+    
+
+
     
     
 

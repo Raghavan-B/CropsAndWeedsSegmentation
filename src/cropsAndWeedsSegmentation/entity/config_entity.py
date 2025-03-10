@@ -34,5 +34,31 @@ class DataTransformationConfig:
     batch_size: int
     shuffle:bool
 
+@dataclass
+class ModelTrainerConfig:
+    root_dir: Path
+    data_dir: Path
+    model_name: str
+    epochs: int
+    lr: float
+    weight_decay: float
+    enoder: str
+    weights: str
+    architecture: str
+    in_channels: int
+    classes: int
+    batch_size: int
+
+@dataclass
+class ModelEvaluationConfig:
+    root_dir: Path
+    model_path: Path
+    enoder: str
+    weights: str
+    in_channels: int
+    classes: int
+
+
+
 
 

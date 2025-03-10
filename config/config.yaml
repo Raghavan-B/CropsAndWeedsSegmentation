@@ -22,4 +22,14 @@ data_transformation:
   data_dir: artifacts/data_ingestion
   batch_size: 16
   shuffle: False
+
+model_trainer:
+  root_dir: artifacts/model_trainer
+  data_dir: artifacts/data_ingestion
+  model_name: model_weights.pth
+
+model_evaluation:
+  root_dir: artifacts/model_evaluation
+  model_path: artifacts/model_trainer/model_weights.pth
+
   

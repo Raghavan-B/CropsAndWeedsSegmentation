@@ -22,5 +22,6 @@ certifi
 hyperopt
 dagshub
 dvc
+dvc-s3
 
 -e .

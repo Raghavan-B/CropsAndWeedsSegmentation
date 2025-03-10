@@ -1,4 +1,5 @@
 from pathlib import Path
+import torch
 
 CONFIG_FILE_PATH = Path('config/config.yaml')
 PARAMS_FILE_PATH = Path('params.yaml')
@@ -15,6 +16,8 @@ LABEL_TO_COLOR = {
     1: (255, 0, 0),     # Weed - Red
     2: (0, 255, 0)      # Crop - Green
 }
+
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 

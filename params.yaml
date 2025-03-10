@@ -1,1 +1,9 @@
-key: value
+Segformer:
+  epochs: 50
+  lr: 0.011490350629859218
+  weight_decay: 0.008832808580811364
+  encoder: timm-efficientnet-b0
+  weights: imagenet
+  architecture: Segformer
+  in_channels: 3
+  classes: 3
