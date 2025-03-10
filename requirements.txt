@@ -20,5 +20,7 @@ pillow
 pymongo[srv]==3.12
 certifi
 hyperopt
+dagshub
+dvc
 
 -e .

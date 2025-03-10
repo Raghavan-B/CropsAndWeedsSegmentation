@@ -171,7 +171,8 @@ cython_debug/
 .pypirc
 
 # Artifacts
-artifacts/
+artifacts/*
+!artifacts/*.dvc
 
 # logging
 logs/
