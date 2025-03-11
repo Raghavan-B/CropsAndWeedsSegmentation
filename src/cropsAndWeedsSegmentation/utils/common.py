@@ -1,6 +1,7 @@
 import os
 import yaml
 from src.cropsAndWeedsSegmentation.logging.logger import logger
+from src.cropsAndWeedsSegmentation.constants import DEVICE
 from src.cropsAndWeedsSegmentation.exception.exception import SegmentationException
 from ensure import ensure_annotations
 from pathlib import Path
@@ -90,7 +91,7 @@ def save_model(path:Union[str, Path],model) -> None:
     logger.info(f'Saved the model successfully at path {path}')
 
 @ensure_annotations
-def load_model(path:Path, model:torch.nn.Module, device:str='cpu') -> torch.nn.Module:
+def load_model(path:Path, model:torch.nn.Module) -> torch.nn.Module:
     '''
     Description:
 
@@ -98,7 +99,7 @@ def load_model(path:Path, model:torch.nn.Module, device:str='cpu') -> torch.nn.M
 
     Returns:
     '''
-    model.load_state_dict(torch.load(path,map_location=torch.device(device)))
+    model.load_state_dict(torch.load(path,map_location=DEVICE))
     logger.info(f'The model is successfully loaded from path {path}')
     return model
     

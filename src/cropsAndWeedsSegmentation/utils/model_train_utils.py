@@ -1,7 +1,8 @@
 import torch
 from src.cropsAndWeedsSegmentation.utils.model_eval_utils import pixel_wise_acc
+from src.cropsAndWeedsSegmentation.constants import DEVICE
 
-def train_fn(data_loader,model,optimizer,DEVICE):
+def train_fn(data_loader,model,optimizer):
     model.train()
     total_loss, pixel_acc = 0.0,0.0
     for images,masks in data_loader:
@@ -18,7 +19,7 @@ def train_fn(data_loader,model,optimizer,DEVICE):
     return total_loss/len(data_loader), pixel_acc/len(data_loader)
         
 ## Eval function
-def eval_fn(data_loader,model,DEVICE):
+def eval_fn(data_loader,model):
     model.eval()
     total_loss, pixel_accuracy = 0.0,0.0
     with torch.no_grad():

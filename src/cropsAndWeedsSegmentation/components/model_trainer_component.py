@@ -1,6 +1,6 @@
 from src.cropsAndWeedsSegmentation.entity.config_entity import (ModelTrainerConfig)
 from src.cropsAndWeedsSegmentation.utils.model_class_utils import SegmentationModel
-
+from src.cropsAndWeedsSegmentation.constants import DEVICE
 
 import torch
 import segmentation_models_pytorch as smp
@@ -22,12 +22,11 @@ class ModelTrainer:
         )
         return model_arch
     
-    def create_model(self,model_arch:torch.nn.Module,device:torch.device)-> torch.nn.Module:
+    def create_model(self,model_arch:torch.nn.Module)-> torch.nn.Module:
         '''
 
         '''
-        return SegmentationModel(arc=model_arch,
-                                 device= device).to(device)
+        return SegmentationModel(arc=model_arch).to(DEVICE)
 
 
     

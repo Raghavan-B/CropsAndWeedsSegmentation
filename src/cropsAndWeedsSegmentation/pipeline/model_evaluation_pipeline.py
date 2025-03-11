@@ -2,7 +2,7 @@ from src.cropsAndWeedsSegmentation.config.configuration import ConfigurationMana
 from src.cropsAndWeedsSegmentation.components.model_evaluation_component import ModelEvaluation
 from src.cropsAndWeedsSegmentation.logging.logger import logger
 from src.cropsAndWeedsSegmentation.constants import DEVICE
-
+import torch
 from pathlib import Path
 class ModelEvaluationPipeline:
     def __init__(self):
@@ -16,11 +16,11 @@ class ModelEvaluationPipeline:
         
         model_arch = model_evaluation.create_model_architecture()
         logger.info("Model architecture created successfully!!")
-        model = model_evaluation.create_model(model_arch,DEVICE)
+        model = model_evaluation.create_model(model_arch)
         logger.info("Model has been created successfully")
         model = model_evaluation.get_model_with_weights(model)
         logger.info(f"Model weights are loaded successfully from {model_evaluation_config.model_path}")
-        avg_test_loss,avg_pixel_acc,test_inference_speed = model_evaluation.evaluate_model(testloader,model,DEVICE)
+        avg_test_loss,avg_pixel_acc,test_inference_speed = model_evaluation.evaluate_model(testloader,model)
         metrics_file_path = Path(model_evaluation_config.root_dir)/"testing_metrics.json"
         metrics = {
             "avg_test_loss":avg_test_loss,
