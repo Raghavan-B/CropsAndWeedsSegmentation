@@ -1,8 +1,6 @@
 import numpy as np
 from PIL import Image
 from src.cropsAndWeedsSegmentation.utils.common import load_model
-from pathlib import Path
-import torchvision.transforms as transforms
 import torch
 from src.cropsAndWeedsSegmentation.utils.model_class_utils import SegmentationModel
 import segmentation_models_pytorch as smp
@@ -56,8 +54,5 @@ class PredictionPipeline:
         image = image.permute(1,2,0)
         pred_mask = pred_mask.cpu().numpy().squeeze(0)
         colored_mask = colorize_label_mask(pred_mask,LABEL_TO_COLOR)
-        plt.subplot(1,2,1)
-        plt.imshow(image)
-        plt.subplot(1,2,2)
-        plt.imshow(colored_mask)
-        plt.show()
+
+        return colored_mask

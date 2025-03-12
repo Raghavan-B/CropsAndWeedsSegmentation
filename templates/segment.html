@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weed Segmentation Tool</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .preview-container {
+        min-height: 300px;
+        border: 2px dashed #ccc;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .preview-container img {
+        max-width: 100%;
+        max-height: 400px;
+        display: none;
+      }
+
+      .upload-prompt {
+        text-align: center;
+        color: #6c757d;
+      }
+
+      .result-container {
+        display: none;
+        margin-top: 30px;
+      }
+
+    </style>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+          <a class="navbar-brand" href="{{url_for('index')}}">Weed Sense</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('index')}}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('segment')}}">Segment</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('about')}}">About</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="container my-5">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+              <div class="card-header bg-light">
+                <h4>Upload Field Image for Crop and Weed Segmentation</h4>
+              </div>
+              <div class="card-body">
+                <form id="upload-form" enctype="multipart/form-data">
+                  <div class="preview-container">
+                    <div class="upload-prompt">
+                      <i class="bi bi-upload" style="font-size: 3rem"></i>
+                      <h5 class="mt-3">
+                        Drop your image here or click to browse
+                      </h5>
+                      <p>Supported formats: JPG, JPEG</p>
+                    </div>
+                    <img id="preview-image" src="#" alt="Preview" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="image-upload" class="form-label"
+                      >Select an image from your device</label
+                    >
+                    <input
+                      class="form-control"
+                      type="file"
+                      id="image-upload"
+                      accept="image/jpeg, image/jpg"
+                      name="file"
+                    />
+                  </div>
+
+                  <div class="d-grid gap-2">
+                    <button
+                      class="btn btn-success"
+                      type="submit"
+                      id="process-btn"
+                      disabled
+                    >
+                      Segment Image
+                    </button>
+                    <div id="loading-spinner" class="text-center my-3">
+                      <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                      <p class="mt-2">Processing image, please wait...</p>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="result-container" id="result-container">
+                  <hr />
+                  <h5>Segmentation Results</h5>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="card mb-3">
+                        <div class="card-header">Original Image</div>
+                        <div class="card-body p-0">
+                          <img
+                            id="original-result"
+                            src="#"
+                            class="img-fluid"
+                            alt="Original Image"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card mb-3">
+                        <div class="card-header">Segmented Image</div>
+                        <div class="card-body p-0">
+                          <img
+                            id="segmented-result"
+                            src="#"
+                            class="img-fluid"
+                            alt="Segmented Image"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card mb-3">
+                    <div class="card-header">Note</div>
+                    <div class="card-body">
+                      <p>Red Area: <span id="weed-percentage">Weed</span></p>
+                      <p>
+                        Green Area: <span id="weed-types">Crop</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="text-center py-4 bg-light mt-5">
+        <p>© 2025 Weed Sense | AI for Precision Agriculture</p>
+    </footer>
+
+    <script>
+      // Get elements
+      const uploadForm = document.getElementById('upload-form');
+      const imageUpload = document.getElementById("image-upload");
+      const previewImage = document.getElementById("preview-image");
+      const uploadPrompt = document.querySelector(".upload-prompt");
+      const processBtn = document.getElementById("process-btn");
+      const loadingSpinner = document.getElementById('loading-spinner');
+      loadingSpinner.style.display = 'none'
+      const resultContainer = document.getElementById("result-container");
+      const originalResult = document.getElementById("original-result");
+      const segmentedResult = document.getElementById("segmented-result");
+      
+      // Handle image upload and preview
+      imageUpload.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            previewImage.src = e.target.result;
+            previewImage.style.display = "block";
+            uploadPrompt.style.display = "none";
+            processBtn.disabled = false;
+          };
+
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      // Form submission handler
+      uploadForm.addEventListener('submit',function(e){
+        e.preventDefault();
+
+        loadingSpinner.style.display = 'block';
+        processBtn.disabled = true;
+
+        const formData = new FormData(this);
+
+        fetch('/segment',{
+            method: 'POST',
+            body: formData
+        })
+        .then(response =>{
+            if (!response.ok){
+                throw new Error('Network response was not ok')
+            }
+            return response.json();
+        })
+        .then(data => {
+                // Hide loading spinner
+                loadingSpinner.style.display = 'none';
+                processBtn.disabled = false;
+                
+                // Show result container
+                resultContainer.style.display = 'block';
+                
+                // Set original image
+                originalResult.src = data.original_image;
+                
+                // Set segmented image
+                segmentedResult.src = data.segmented_image;
+                                
+                // Scroll to results
+                resultContainer.scrollIntoView({ behavior: 'smooth' });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                loadingSpinner.style.display = 'none';
+                processBtn.disabled = false;
+                alert('Error processing image. Please try again.');
+            });
+        });
+        
+      // Allow drag and drop on the preview container
+      const previewContainer = document.querySelector(".preview-container");
+
+      ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        previewContainer.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ["dragenter", "dragover"].forEach((eventName) => {
+        previewContainer.addEventListener(eventName, highlight, false);
+      });
+
+      ["dragleave", "drop"].forEach((eventName) => {
+        previewContainer.addEventListener(eventName, unhighlight, false);
+      });
+
+      function highlight() {
+        previewContainer.style.borderColor = "#198754";
+        previewContainer.style.backgroundColor = "rgba(25, 135, 84, 0.1)";
+      }
+
+      function unhighlight() {
+        previewContainer.style.borderColor = "#ccc";
+        previewContainer.style.backgroundColor = "";
+      }
+
+      previewContainer.addEventListener("drop", handleDrop, false);
+
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+
+        if (files.length) {
+          imageUpload.files = files;
+          // Trigger the change event manually
+          const event = new Event("change");
+          imageUpload.dispatchEvent(event);
+        }
+      }
+    </script>
+  </body>
+</html>
