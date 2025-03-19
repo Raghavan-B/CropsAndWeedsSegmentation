@@ -6,13 +6,20 @@ from src.cropsAndWeedsSegmentation.pipeline.prediction_pipeline import Predictio
 from pathlib import Path
 from io import BytesIO
 import base64
+import mlflow
 
 app = Flask(__name__)
 
+mlflow.set_tracking_uri('https://dagshub.com/Raghavan-B/CropsAndWeedsSegmentation.mlflow')
+
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'jpg','jpeg'}
+MODEL_NAME = "models:/Best_model_v2/latest"
+MODEL_PATH = "cached_model"
 
 os.makedirs(UPLOAD_FOLDER,exist_ok=True)
+os.makedirs(MODEL_PATH,exist_ok=True)
+
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 *1024*1024
@@ -21,10 +28,13 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
 
 def segment_weeds(image_path,filename):
-    obj = PredictionPipeline(model_weights_path=Path('artifacts/model_trainer/model_weights.pth'))
-    pred_mask = obj.segment_images(image_path)
+    obj = PredictionPipeline(model_weights_path=Path('artifacts/model_trainer/model_weights.pth'),model_name= MODEL_NAME, model_path=MODEL_PATH)
+    # pred_mask = obj.segment_images(image_path)
+    # pred_mask = Image.fromarray(pred_mask)
+    # print('Prediction done!!')
+    pred_mask = obj.predict(image_path)
     pred_mask = Image.fromarray(pred_mask)
-    print('Prediction done!!')
+    print('Prediction Done!!')
 
     buffer_segmented = BytesIO()
     pred_mask.save(buffer_segmented,format='PNG')
@@ -76,4 +86,4 @@ def segment():
         return render_template('segment.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=3000,debug=True)

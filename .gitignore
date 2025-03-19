@@ -177,3 +177,5 @@ artifacts/*
 # logging
 logs/
 
+# cache model
+cached_model/
