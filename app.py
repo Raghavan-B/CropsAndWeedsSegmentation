@@ -27,8 +27,8 @@ app.config['MAX_CONTENT_LENGTH'] = 16 *1024*1024
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
 
-def segment_weeds(image_path,filename):
-    obj = PredictionPipeline(model_weights_path=Path('artifacts/model_trainer/model_weights.pth'),model_name= MODEL_NAME, model_path=MODEL_PATH)
+def segment_weeds(image_path):
+    obj = PredictionPipeline(model_name= MODEL_NAME, model_path=MODEL_PATH)
     # pred_mask = obj.segment_images(image_path)
     # pred_mask = Image.fromarray(pred_mask)
     # print('Prediction done!!')
@@ -75,7 +75,7 @@ def segment():
         buffer_segmented.seek(0)
         image_b64 = base64.b64encode(buffer_segmented.read()).decode('utf-8')
 
-        segmented_b64 = segment_weeds(image_path=file_path,filename = filename)
+        segmented_b64 = segment_weeds(image_path=file_path)
         os.remove(file_path)
 
         return jsonify({
@@ -86,4 +86,4 @@ def segment():
         return render_template('segment.html')
 
 if __name__ == '__main__':
-    app.run(port=3000,debug=True)
+    app.run(host="0.0.0.0",debug=True)

@@ -1,7 +1,6 @@
 import os
 from PIL import Image
 from PIL.JpegImagePlugin import JpegImageFile
-from src.cropsAndWeedsSegmentation.logging.logger import logger
 from src.cropsAndWeedsSegmentation.entity.config_entity import (DataValidationConfig)
 
 class DataValidation:

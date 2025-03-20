@@ -1,7 +1,5 @@
 from ensure import ensure_annotations
 import numpy as np
-import albumentations as A
-
 
 @ensure_annotations
 def convert_color_mask_to_label(mask:np.ndarray, COLOR_TO_LABEL:dict)->np.ndarray:
@@ -45,12 +43,3 @@ def colorize_label_mask(label_mask:np.ndarray ,LABEL_TO_COLOR:dict)->np.ndarray:
 
     return color_mask
 
-def get_train_augs():
-    return A.Compose([
-        A.HorizontalFlip(0.5),
-        A.VerticalFlip(0.43),
-        A.RandomBrightnessContrast(0.2),
-        A.GaussianBlur(p=0.1),
-        A.GridDistortion(p=0.2),
-        A.RandomRotate90(p=0.5),
-    ])

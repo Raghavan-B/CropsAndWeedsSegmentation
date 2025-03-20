@@ -1,4 +1,5 @@
-from src.cropsAndWeedsSegmentation.utils.data_transformation_utlis import get_train_augs,convert_color_mask_to_label
+from src.cropsAndWeedsSegmentation.utils.common import get_train_augs
+from src.cropsAndWeedsSegmentation.utils.data_transformation_utils import convert_color_mask_to_label
 from src.cropsAndWeedsSegmentation.config.configuration import ConfigurationManager
 from src.cropsAndWeedsSegmentation.components.data_transformation_component import DataTransformation
 from src.cropsAndWeedsSegmentation.logging.logger import logger

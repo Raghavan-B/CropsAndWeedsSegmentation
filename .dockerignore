@@ -1,0 +1,44 @@
+.dvc/
+artifacts/
+config/
+logs/
+research/
+
+src/cropsAndWeedsSegmentation/config/
+src/cropsAndWeedsSegmentation/components/
+src/cropsAndWeedsSegmentation/entity/
+src/cropsAndWeedsSegmentation/exception/
+src/cropsAndWeedsSegmentation/logging/
+src/cropsAndWeedsSegmentation/pipeline/*
+!src/cropsAndWeedsSegmentation/pipeline/prediction_pipeline.py
+src/cropsAndWeedsSegmentation/utils/*
+!src/cropsAndWeedsSegmentation/utils/data_transformation_utils.py
+!src/cropsAndWeedsSegmentation/utils/model_class_utils.py
+
+
+main.py
+params.yaml
+schema.yaml
+setup.py
+template.py
+test_model.py
+test_mongo.py
+.dvcignore
+.gitignore
+.git/
+
+# Ignore virtual environments
+venv/
+.env
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore model cache (since it's downloaded at runtime)
+cached_model/
+
+#requirements.txt
+requirements.txt

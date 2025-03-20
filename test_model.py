@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import os
 
 from src.cropsAndWeedsSegmentation.constants import DEVICE,LABEL_TO_COLOR
-from src.cropsAndWeedsSegmentation.utils.data_transformation_utlis import colorize_label_mask
+from cropsAndWeedsSegmentation.utils.data_transformation_utils import colorize_label_mask
 from src.cropsAndWeedsSegmentation.pipeline.prediction_pipeline import PredictionPipeline
 
 mlflow.set_tracking_uri('https://dagshub.com/Raghavan-B/CropsAndWeedsSegmentation.mlflow')

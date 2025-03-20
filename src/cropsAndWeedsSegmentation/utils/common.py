@@ -11,6 +11,18 @@ from box import ConfigBox
 import sys
 import json
 import torch
+import albumentations as A
+
+
+def get_train_augs():
+    return A.Compose([
+        A.HorizontalFlip(0.5),
+        A.VerticalFlip(0.43),
+        A.RandomBrightnessContrast(0.2),
+        A.GaussianBlur(p=0.1),
+        A.GridDistortion(p=0.2),
+        A.RandomRotate90(p=0.5),
+    ])
 
 @ensure_annotations
 def read_yaml(path_to_yaml: Path)->ConfigBox:
@@ -103,4 +115,3 @@ def load_model(path:Path, model:torch.nn.Module) -> torch.nn.Module:
     logger.info(f'The model is successfully loaded from path {path}')
     return model
     
-

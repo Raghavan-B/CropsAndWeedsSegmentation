@@ -2,7 +2,6 @@ from src.cropsAndWeedsSegmentation.config.configuration import ConfigurationMana
 from src.cropsAndWeedsSegmentation.components.model_trainer_component import ModelTrainer
 from src.cropsAndWeedsSegmentation.utils.model_train_utils import train_fn,eval_fn
 from src.cropsAndWeedsSegmentation.logging.logger import logger
-from src.cropsAndWeedsSegmentation.utils.common import save_model,save_json
 
 import torch.optim as optim
 import mlflow
