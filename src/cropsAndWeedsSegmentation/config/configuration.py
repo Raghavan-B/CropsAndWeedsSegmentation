@@ -68,7 +68,6 @@ class ConfigurationManager:
 
         model_trainer_config = ModelTrainerConfig(
             root_dir=config.root_dir,
-            data_dir=config.data_dir,
             model_name=config.model_name,
             epochs=params.epochs,
             lr = params.lr,

@@ -2,6 +2,9 @@ from src.cropsAndWeedsSegmentation.config.configuration import ConfigurationMana
 from src.cropsAndWeedsSegmentation.components.model_trainer_component import ModelTrainer
 from src.cropsAndWeedsSegmentation.utils.model_train_utils import train_fn,eval_fn
 from src.cropsAndWeedsSegmentation.logging.logger import logger
+from src.cropsAndWeedsSegmentation.exception.exception import SegmentationException
+from src.cropsAndWeedsSegmentation.utils.common import save_json
+from src.cropsAndWeedsSegmentation.pipeline.data_transformation_pipeline import DataTransformationTrainingPipeline
 
 import torch.optim as optim
 import mlflow
@@ -11,6 +14,8 @@ import torch
 
 from tqdm import tqdm
 import os
+import sys
+
 
 
 
@@ -74,9 +79,32 @@ class ModelTrainerTrainingPipeline:
             logger.info("Model has been tracked successfully")
         
         model_filepath = os.path.join(model_trainer_config.root_dir,model_trainer_config.model_name)
-        # save_model(path=model_filepath,model=model)
         torch.save(model,model_filepath)
         return avg_epoch_train_loss,avg_epoch_train_pxl_acc,avg_epoch_valid_loss,avg_epoch_valid_pxl_acc
+
+if __name__ == '__main__':
+    try:
+        STAGE_NAME = "Data Transformation Stage"
+        logger.info(f'>>>> Stage: {STAGE_NAME} started <<<<')
+        obj = DataTransformationTrainingPipeline()
+        trainloader,testloader,validloader = obj.initiate_data_transformation()
+
+        obj = ModelTrainerTrainingPipeline()
+        avg_epoch_train_loss,avg_epoch_train_pxl_acc,avg_epoch_valid_loss,avg_epoch_valid_pxl_acc = obj.initiate_model_training(trainloader,validloader)
+        metrics = {
+        'Average train loss per epoch':avg_epoch_train_loss,
+        'Average validation loss per epoch':avg_epoch_valid_loss,
+        'Average train pixel accuracy per epoch':avg_epoch_train_pxl_acc,
+        'Average validation pixel accuracy per epoch':avg_epoch_valid_pxl_acc
+        }
+        metrics_filepath = os.path.join('artifacts/model_trainer','training_metrics.json')
+        save_json(metrics_filepath,metrics)
+        logger.info('Training Metrics has been saved successfully in artifacts/model_trainer')
+        logger.info(f'>>>> Stage: {STAGE_NAME} Completed <<<<\n\nx=====x')
+
+    except Exception as e:
+        logger.error(f'Error occured : {e}')
+        raise SegmentationException(e,sys)
 
 
 

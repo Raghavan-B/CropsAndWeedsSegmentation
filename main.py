@@ -3,7 +3,6 @@ from src.cropsAndWeedsSegmentation.pipeline.data_validation_pipeline import Data
 from src.cropsAndWeedsSegmentation.pipeline.data_transformation_pipeline import DataTransformationTrainingPipeline
 from src.cropsAndWeedsSegmentation.pipeline.model_trainer_pipeline import ModelTrainerTrainingPipeline
 from src.cropsAndWeedsSegmentation.pipeline.model_evaluation_pipeline import ModelEvaluationPipeline
-from src.cropsAndWeedsSegmentation.pipeline.prediction_pipeline import PredictionPipeline
 
 from src.cropsAndWeedsSegmentation.utils.common import save_json
 import warnings
@@ -90,14 +89,4 @@ except Exception as e:
     raise SegmentationException(e,sys)
 
 
-STAGE_NAME = "Prediction Pipeline Stage"
-try:
-    logger.info(f'>>>> Stage: {STAGE_NAME} started <<<<')
-    img_path = "artifacts/data_ingestion/others/img/20918823_frame_002839.jpg"
-    obj = PredictionPipeline(model_weights_path=Path('artifacts/model_trainer/model_weights.pth'))
-    pred_mask = obj.segment_images(img_path)
-    logger.info(f'>>>> Stage: {STAGE_NAME} Completed <<<<\n\nx=====x')
-except Exception as e:
-    logger.error(f'Error occured : {e}')
-    raise SegmentationException(e,sys)
 

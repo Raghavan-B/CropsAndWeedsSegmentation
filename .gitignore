@@ -173,9 +173,11 @@ cython_debug/
 # Artifacts
 artifacts/*
 !artifacts/*.dvc
-
+artifacts_test/
 # logging
 logs/
 
 # cache model
 cached_model/
+
+

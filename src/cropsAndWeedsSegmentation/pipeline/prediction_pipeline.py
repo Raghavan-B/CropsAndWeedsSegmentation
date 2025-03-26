@@ -28,6 +28,22 @@ class PredictionPipeline:
         return model
     
     def predict(self,img_path):
+        """
+        Predicts a colorized mask for an input image using a locally loaded model.
+
+        This function loads a model from a local directory, processes the input image to match
+        the model's expected input size and format, performs inference to predict a mask, and 
+        returns the colorized version of the predicted mask.
+
+        The process includes resizing the image to 224x224 pixels, converting it into a tensor, 
+        passing it through the model, and then applying a colorization to the predicted mask.
+
+        Args:
+            img_path (str): Path to the image file (preferably JPEG) for which the mask is to be predicted.
+
+        Returns:
+            numpy.ndarray: The colorized mask as a NumPy array, representing the predicted mask for the input image.
+        """
         self.save_model_from_mlflow()
         model = self.load_model_from_local()
         img = Image.open(img_path)

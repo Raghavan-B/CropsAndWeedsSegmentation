@@ -5,7 +5,6 @@ from src.cropsAndWeedsSegmentation.components.data_transformation_component impo
 from src.cropsAndWeedsSegmentation.logging.logger import logger
 from src.cropsAndWeedsSegmentation.exception.exception import SegmentationException
 import sys
-import matplotlib.pyplot as plt
 
 class DataTransformationTrainingPipeline:
     def __init__(self):
@@ -21,12 +20,6 @@ class DataTransformationTrainingPipeline:
                                                             augmentations = get_train_augs())
         logger.info(f'Size of train dataset {len(trainset)}')
         logger.info('Train Dataset has been created successfully!!')
-        image,mask = trainset[0]
-        # plt.subplot(1,2,1)
-        # plt.imshow(image.permute(1,2,0))
-        # plt.subplot(1,2,2)
-        # plt.imshow(mask.permute(1,2,0))
-        # plt.show()
         testset = data_transformation.create_dataset_class(split='test',
                                                             convert_color_mask_to_label=convert_color_mask_to_label,
                                                             )
@@ -53,7 +46,7 @@ if __name__ == '__main__':
     try:
         logger.info(f'>>>> Stage: {STAGE_NAME} started <<<<')
         obj = DataTransformationTrainingPipeline()
-        obj.initiate_data_transformation()
+        trainloader,testloader,validloader = obj.initiate_data_transformation()
         logger.info(f'>>>> Stage: {STAGE_NAME} Completed <<<<\n\nx=====x')
     except Exception as e:
         logger.error(f'Error occured : {e}')

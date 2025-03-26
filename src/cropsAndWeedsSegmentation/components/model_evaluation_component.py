@@ -33,7 +33,7 @@ class ModelEvaluation:
         '''
         return SegmentationModel(arc=model_arch).to(DEVICE)
     
-    def get_model_with_weights(self,model_arc):
+    def get_model_with_weights(self):
         model_path = Path(self.config.model_path)
         # model = load_model(model_path,model_arc)
         model = torch.load(model_path,map_location=DEVICE,weights_only=False)

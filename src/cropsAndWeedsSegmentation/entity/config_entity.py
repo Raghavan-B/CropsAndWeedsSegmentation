@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
 
 @dataclass
 class DataIngestionConfig:
@@ -37,7 +36,6 @@ class DataTransformationConfig:
 @dataclass
 class ModelTrainerConfig:
     root_dir: Path
-    data_dir: Path
     model_name: str
     epochs: int
     lr: float

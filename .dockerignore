@@ -3,6 +3,9 @@ artifacts/
 config/
 logs/
 research/
+artifacts_test/
+dvc.lock
+dvc.yaml
 
 src/cropsAndWeedsSegmentation/config/
 src/cropsAndWeedsSegmentation/components/
