@@ -1,0 +1,66 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: cmd /c "set PYTHONPATH=. && python src/cropsAndWeedsSegmentation/pipeline/data_ingestion_pipeline.py"
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: be5fda6797c50e8737f7ec17a36fb14b
+      size: 1055
+    - path: src/cropsAndWeedsSegmentation/pipeline/data_ingestion_pipeline.py
+      hash: md5
+      md5: 9cec3adc7692e1c4451adae8a33f1570
+      size: 1747
+    outs:
+    - path: artifacts_test/data_ingestion
+      hash: md5
+      md5: 58329b385bb093816c1c34c9ff83301b.dir
+      size: 18995823
+      nfiles: 2028
+  data_validation:
+    cmd: cmd /c "set PYTHONPATH=. && python src/cropsAndWeedsSegmentation/pipeline/data_validation_pipeline.py"
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: be5fda6797c50e8737f7ec17a36fb14b
+      size: 1055
+    - path: schema.yaml
+      hash: md5
+      md5: 71573756ec545e3fb03f7459268cd33b
+      size: 63
+    outs:
+    - path: artifacts_test/data_validation
+      hash: md5
+      md5: 0ccb3ea5849272ff03be5ab71786b9ff.dir
+      size: 23
+      nfiles: 1
+  model_training:
+    cmd: cmd /c "set PYTHONPATH=. && python src/cropsAndWeedsSegmentation/pipeline/model_trainer_pipeline.py"
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: be5fda6797c50e8737f7ec17a36fb14b
+      size: 1055
+    - path: params.yaml
+      hash: md5
+      md5: 9036559ebc38930019fc21d2a9b95c69
+      size: 203
+    outs:
+    - path: artifacts_test/model_trainer
+      hash: md5
+      md5: 4894b9419780aba083c7bcdea3c939de.dir
+      size: 18238538
+      nfiles: 1
+  model_evaluation:
+    cmd: cmd /c "set PYTHONPATH=. && python src/cropsAndWeedsSegmentation/pipeline/model_evaluation_pipeline.py"
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: be5fda6797c50e8737f7ec17a36fb14b
+      size: 1055
+    outs:
+    - path: artifacts_test/model_evaluation
+      hash: md5
+      md5: 2a1bf86d99ed766bc70582d54e0927c8.dir
+      size: 147
+      nfiles: 1

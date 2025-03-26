@@ -84,7 +84,7 @@ class ModelTrainerTrainingPipeline:
 
 if __name__ == '__main__':
     try:
-        STAGE_NAME = "Data Transformation Stage"
+        STAGE_NAME = "Model Training Stage"
         logger.info(f'>>>> Stage: {STAGE_NAME} started <<<<')
         obj = DataTransformationTrainingPipeline()
         trainloader,testloader,validloader = obj.initiate_data_transformation()

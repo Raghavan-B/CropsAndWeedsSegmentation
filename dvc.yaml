@@ -1,0 +1,34 @@
+stages:
+  data_ingestion:
+    cmd: cmd /c "set PYTHONPATH=. && python src/cropsAndWeedsSegmentation/pipeline/data_ingestion_pipeline.py"
+    deps:
+      - src/cropsAndWeedsSegmentation/pipeline/data_ingestion_pipeline.py
+
+      - config/config.yaml
+    outs:
+      - artifacts_test/data_ingestion
+    
+  data_validation:
+    cmd: cmd /c "set PYTHONPATH=. && python src/cropsAndWeedsSegmentation/pipeline/data_validation_pipeline.py"
+    deps:
+      - config/config.yaml
+      - schema.yaml
+    outs:
+      - artifacts_test/data_validation
+
+  model_training:
+    cmd: cmd /c "set PYTHONPATH=. && python src/cropsAndWeedsSegmentation/pipeline/model_trainer_pipeline.py"
+    deps:
+      - config/config.yaml
+      - params.yaml
+    outs:
+      - artifacts_test/model_trainer
+
+  model_evaluation:
+    cmd: cmd /c "set PYTHONPATH=. && python src/cropsAndWeedsSegmentation/pipeline/model_evaluation_pipeline.py"
+
+    deps:
+      - config/config.yaml
+    outs:
+      - artifacts_test/model_evaluation
+  

@@ -29,9 +29,6 @@ def allowed_file(filename):
 
 def segment_weeds(image_path):
     obj = PredictionPipeline(model_name= MODEL_NAME, model_path=MODEL_PATH)
-    # pred_mask = obj.segment_images(image_path)
-    # pred_mask = Image.fromarray(pred_mask)
-    # print('Prediction done!!')
     pred_mask = obj.predict(image_path)
     pred_mask = Image.fromarray(pred_mask)
     print('Prediction Done!!')
