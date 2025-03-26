@@ -1,4 +1,0 @@
-schema: '2.0'
-stages:
-  stage_name:
-    cmd: python main.py

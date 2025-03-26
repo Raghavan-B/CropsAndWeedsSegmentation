@@ -1,3 +1,0 @@
-stages:
-  stage_name:
-    cmd: python main.py
