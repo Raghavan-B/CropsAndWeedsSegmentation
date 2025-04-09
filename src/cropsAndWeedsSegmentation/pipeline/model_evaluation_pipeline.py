@@ -18,12 +18,8 @@ class ModelEvaluationPipeline:
 
         model_evaluation = ModelEvaluation(model_evaluation_config)
         
-        model_arch = model_evaluation.create_model_architecture()
-        logger.info("Model architecture created successfully!!")
-        model = model_evaluation.create_model(model_arch)
-        logger.info("Model has been created successfully")
         model = model_evaluation.get_model_with_weights()
-        logger.info(f"Model weights are loaded successfully from {model_evaluation_config.model_path}")
+        logger.info(f"Model is loaded successfully from {model_evaluation_config.model_path}")
         avg_test_loss,avg_pixel_acc,test_inference_speed = model_evaluation.evaluate_model(testloader,model)
         metrics_file_path = Path(model_evaluation_config.root_dir)/"testing_metrics.json"
         metrics = {

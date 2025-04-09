@@ -29,7 +29,7 @@ class ModelTrainerTrainingPipeline:
         config = ConfigurationManager()
         model_trainer_config = config.get_model_training_config()
         model_params = {
-                'Model architecture': model_trainer_config.architecture,
+                'Model architecture': 'Proposed model',
                 'Encoder': model_trainer_config.enoder,
                 'Weights':model_trainer_config.weights,
                 'in_channels':model_trainer_config.in_channels,
@@ -42,10 +42,7 @@ class ModelTrainerTrainingPipeline:
         }
         model_trainer = ModelTrainer(model_trainer_config)
         
-        model_arch = model_trainer.create_model_architecture()
-        logger.info("Model architecture has been created successfully!!")
-
-        model = model_trainer.create_model(model_arch)
+        model = model_trainer.create_segmentation_model()
         logger.info("Model has been created successfully")
 
         epochs = model_trainer_config.epochs
@@ -80,6 +77,7 @@ class ModelTrainerTrainingPipeline:
         
         model_filepath = os.path.join(model_trainer_config.root_dir,model_trainer_config.model_name)
         torch.save(model,model_filepath)
+
         return avg_epoch_train_loss,avg_epoch_train_pxl_acc,avg_epoch_valid_loss,avg_epoch_valid_pxl_acc
 
 if __name__ == '__main__':

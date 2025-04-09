@@ -33,6 +33,7 @@ test_mongo.py
 # Ignore virtual environments
 venv/
 .env
+venv_test/
 
 # Ignore Python cache
 __pycache__/

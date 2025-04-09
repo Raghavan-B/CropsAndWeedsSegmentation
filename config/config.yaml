@@ -20,7 +20,7 @@ data_validation:
 
 data_transformation:  
   data_dir: artifacts/data_ingestion
-  batch_size: 16
+  batch_size: 12
   shuffle: False
 
 model_trainer:

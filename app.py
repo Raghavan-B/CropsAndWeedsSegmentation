@@ -3,7 +3,6 @@ import os
 from PIL import Image
 from werkzeug.utils import secure_filename
 from src.cropsAndWeedsSegmentation.pipeline.prediction_pipeline import PredictionPipeline
-from pathlib import Path
 from io import BytesIO
 import base64
 import mlflow
@@ -14,7 +13,8 @@ mlflow.set_tracking_uri('https://dagshub.com/Raghavan-B/CropsAndWeedsSegmentatio
 
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'jpg','jpeg'}
-MODEL_NAME = "models:/Best_model_v2/latest"
+
+MODEL_NAME = "models:/Proposed_Segmentation_Model/latest"
 MODEL_PATH = "cached_model"
 
 os.makedirs(UPLOAD_FOLDER,exist_ok=True)
@@ -28,7 +28,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
 
 def segment_weeds(image_path):
-    obj = PredictionPipeline(model_name= MODEL_NAME, model_path=MODEL_PATH)
+    obj = PredictionPipeline(model_name=MODEL_NAME,model_path=MODEL_PATH)
     pred_mask = obj.predict(image_path)
     pred_mask = Image.fromarray(pred_mask)
     print('Prediction Done!!')
@@ -83,5 +83,5 @@ def segment():
         return render_template('segment.html')
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",debug=True,port= 80) # For azure 
-    # app.run(host='0.0.0.0',debug=True) # for local
+    # app.run(host="0.0.0.0",debug=True,port= 80) # For azure 
+    app.run(host='0.0.0.0',debug=True) # for local

@@ -2,40 +2,17 @@ from src.cropsAndWeedsSegmentation.entity.config_entity import ModelEvaluationCo
 from src.cropsAndWeedsSegmentation.utils.model_train_utils import eval_fn
 from src.cropsAndWeedsSegmentation.utils.model_eval_utils import inference_speed
 from src.cropsAndWeedsSegmentation.utils.common import save_json
-from src.cropsAndWeedsSegmentation.utils.model_class_utils import SegmentationModel
 from src.cropsAndWeedsSegmentation.constants import DEVICE
 from pathlib import Path
 import torch
-import segmentation_models_pytorch as smp
 
-torch.serialization.add_safe_globals([SegmentationModel])
 
 class ModelEvaluation:
     def __init__(self,config:ModelEvaluationConfig):
         self.config = config
-
-    def create_model_architecture(self)->torch.nn.Module:
-        '''
-        
-        '''
-        model_arch = smp.Segformer(
-            encoder_name=self.config.enoder,
-            encoder_weights=self.config.weights,
-            in_channels=self.config.in_channels,
-            classes=self.config.classes,
-            activation=None
-        )
-        return model_arch
-    
-    def create_model(self,model_arch:torch.nn.Module)-> torch.nn.Module:
-        '''
-
-        '''
-        return SegmentationModel(arc=model_arch).to(DEVICE)
     
     def get_model_with_weights(self):
         model_path = Path(self.config.model_path)
-        # model = load_model(model_path,model_arc)
         model = torch.load(model_path,map_location=DEVICE,weights_only=False)
         return model
     

@@ -18,17 +18,17 @@ import sys
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
-mongo_uri = os.getenv('MONGO_URL')
-STAGE_NAME = "Data Ingestion Stage"
-try:
-    logger.info(f'>>>> Stage: {STAGE_NAME} started <<<<')
-    obj = DataIngestionTrainingPipeline()
-    obj.initiate_data_ingestion(mongo_uri)
-    logger.info(f'>>>> Stage: {STAGE_NAME} Completed <<<<\n\nx=====x')
-except Exception as e:
-    logger.error(f'Error occured : {e}')
-    raise SegmentationException(e,sys)
+# load_dotenv()
+# mongo_uri = os.getenv('MONGO_URL')
+# STAGE_NAME = "Data Ingestion Stage"
+# try:
+#     logger.info(f'>>>> Stage: {STAGE_NAME} started <<<<')
+#     obj = DataIngestionTrainingPipeline()
+#     obj.initiate_data_ingestion(mongo_uri)
+#     logger.info(f'>>>> Stage: {STAGE_NAME} Completed <<<<\n\nx=====x')
+# except Exception as e:
+#     logger.error(f'Error occured : {e}')
+#     raise SegmentationException(e,sys)
 
 STAGE_NAME = "Data Validation Stage"
 try:
@@ -57,25 +57,25 @@ except Exception as e:
     logger.error(f'Error occured : {e}')
     raise SegmentationException(e,sys)
 
-STAGE_NAME = "Model Trainer Stage"
-try:
-    logger.info(f'>>>> Stage: {STAGE_NAME} started <<<<')
-    obj = ModelTrainerTrainingPipeline()
-    avg_epoch_train_loss,avg_epoch_train_pxl_acc,avg_epoch_valid_loss,avg_epoch_valid_pxl_acc = obj.initiate_model_training(trainloader,validloader)
-    metrics = {
-    'Average train loss per epoch':avg_epoch_train_loss,
-    'Average validation loss per epoch':avg_epoch_valid_loss,
-    'Average train pixel accuracy per epoch':avg_epoch_train_pxl_acc,
-    'Average validation pixel accuracy per epoch':avg_epoch_valid_pxl_acc
-    }
-    metrics_filepath = os.path.join('artifacts/model_trainer','training_metrics.json')
-    save_json(metrics_filepath,metrics)
-    logger.info('Training Metrics has been saved successfully in artifacts/model_trainer')
-    logger.info(f'>>>> Stage: {STAGE_NAME} Completed <<<<\n\nx=====x')
+# STAGE_NAME = "Model Trainer Stage"
+# try:
+#     logger.info(f'>>>> Stage: {STAGE_NAME} started <<<<')
+#     obj = ModelTrainerTrainingPipeline()
+#     avg_epoch_train_loss,avg_epoch_train_pxl_acc,avg_epoch_valid_loss,avg_epoch_valid_pxl_acc = obj.initiate_model_training(trainloader,validloader)
+#     metrics = {
+#     'Average train loss per epoch':avg_epoch_train_loss,
+#     'Average validation loss per epoch':avg_epoch_valid_loss,
+#     'Average train pixel accuracy per epoch':avg_epoch_train_pxl_acc,
+#     'Average validation pixel accuracy per epoch':avg_epoch_valid_pxl_acc
+#     }
+#     metrics_filepath = os.path.join('artifacts/model_trainer','training_metrics.json')
+#     save_json(metrics_filepath,metrics)
+#     logger.info('Training Metrics has been saved successfully in artifacts/model_trainer')
+#     logger.info(f'>>>> Stage: {STAGE_NAME} Completed <<<<\n\nx=====x')
 
-except Exception as e:
-    logger.error(f'Error occured : {e}')
-    raise SegmentationException(e,sys)
+# except Exception as e:
+#     logger.error(f'Error occured : {e}')
+#     raise SegmentationException(e,sys)
 
 STAGE_NAME = "Model Evaluation Stage"
 
